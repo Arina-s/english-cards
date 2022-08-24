@@ -16,8 +16,8 @@ public class CardService {
     @Autowired
     public CardService(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
-        saveCard(new Card(null, "home", "дом", "I love my sweet home.", "Я люблю свой милый дом.", LocalDateTime.now()));
-        saveCard(new Card(null, "apple", "яблоко", null, null, LocalDateTime.now()));
+        saveCard(new Card(null, "home", "дом", "I love my sweet home.", "Я люблю свой милый дом.", LocalDateTime.now(), null));
+        saveCard(new Card(null, "apple", "яблоко", null, null, LocalDateTime.now(), null));
     }
 
     public List<Card> getCards() {
