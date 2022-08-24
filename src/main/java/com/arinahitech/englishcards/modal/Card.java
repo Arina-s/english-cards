@@ -18,7 +18,7 @@ public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String phrase;
     private String translate;
     private String sentence;

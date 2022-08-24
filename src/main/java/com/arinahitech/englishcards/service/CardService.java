@@ -1,33 +1,30 @@
 package com.arinahitech.englishcards.service;
 
 import com.arinahitech.englishcards.modal.Card;
+import com.arinahitech.englishcards.repository.CardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class CardService {
 
+    private final CardRepository cardRepository;
+
+    @Autowired
+    public CardService(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
+        saveCard(new Card(null, "home", "дом", "I love my sweet home.", "Я люблю свой милый дом.", LocalDateTime.now()));
+        saveCard(new Card(null, "apple", "яблоко", null, null, LocalDateTime.now()));
+    }
+
     public List<Card> getCards() {
-        return Arrays.asList(
-                new Card(
-                        1,
-                        "house",
-                        "дом",
-                        "I have a house.",
-                        null,
-                        LocalDateTime.now()
-                ),
-                new Card(
-                        2,
-                        "speed",
-                        "скорость",
-                        "The car has a big speed.",
-                        "Эта машина имеет большую скорость.",
-                        LocalDateTime.now()
-                )
-        );
+        return cardRepository.findAll();
+    }
+
+    public void saveCard(Card card) {
+        cardRepository.save(card);
     }
 }
