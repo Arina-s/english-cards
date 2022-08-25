@@ -1,4 +1,4 @@
-package com.arinahitech.englishcards.modal;
+package com.arinahitech.englishcards.modal.db;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,9 +13,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
 public class Card {
 

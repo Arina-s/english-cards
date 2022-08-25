@@ -1,6 +1,6 @@
 package com.arinahitech.englishcards.service;
 
-import com.arinahitech.englishcards.modal.Card;
+import com.arinahitech.englishcards.modal.db.Card;
 import com.arinahitech.englishcards.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,15 +16,17 @@ public class CardService {
     @Autowired
     public CardService(CardRepository cardRepository) {
         this.cardRepository = cardRepository;
-        saveCard(new Card(null, "home", "дом", "I love my sweet home.", "Я люблю свой милый дом.", LocalDateTime.now(), null));
-        saveCard(new Card(null, "apple", "яблоко", null, null, LocalDateTime.now(), null));
     }
 
     public List<Card> getCards() {
         return cardRepository.findAll();
     }
 
-    public void saveCard(Card card) {
+    public void addCard(Card card) {
+        if (cardRepository.findByPhrase(card.getPhrase()).isPresent()) {
+            throw new RuntimeException("The phrase '" + card.getPhrase() + "' already exists.");
+        }
+        card.setCreateDate(LocalDateTime.now());
         cardRepository.save(card);
     }
 }
