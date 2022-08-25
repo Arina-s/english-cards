@@ -1,5 +1,6 @@
 package com.arinahitech.englishcards.service;
 
+import com.arinahitech.englishcards.enums.CardStatus;
 import com.arinahitech.englishcards.exceptions.db.CardAlreadyExistsException;
 import com.arinahitech.englishcards.exceptions.db.CardNotFoundException;
 import com.arinahitech.englishcards.modal.db.Card;
@@ -31,6 +32,7 @@ public class CardService {
         }
 
         card.setCreateDate(LocalDateTime.now());
+        card.setCardStatus(CardStatus.CREATED);
         cardRepository.save(card);
     }
 
@@ -62,7 +64,7 @@ public class CardService {
         return cardRepository.save(card);
     }
 
-    public boolean isFieldSet(String field) {
+    private boolean isFieldSet(String field) {
         return !(field == null || field.isEmpty());
     }
 }
