@@ -10,9 +10,9 @@ public interface CardService {
 
     Card getCard(Long id);
 
-    void addCard(Card card);
+    Card addCard(Card card);
 
-    void deleteCard(Long id);
+    boolean deleteCard(Long id);
 
     Card updateCard(Long id, Card updateCard);
 

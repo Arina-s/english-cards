@@ -5,7 +5,10 @@ import com.arinahitech.englishcards.exceptions.db.CardAlreadyExistsException;
 import com.arinahitech.englishcards.exceptions.db.CardNotFoundException;
 import com.arinahitech.englishcards.modal.db.Card;
 import com.arinahitech.englishcards.repository.CardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.arinahitech.englishcards.service.CardService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,42 +17,47 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CardServiceImpl {
+@RequiredArgsConstructor
+@Transactional
+@Slf4j
+public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
 
-    @Autowired
-    public CardServiceImpl(CardRepository cardRepository) {
-        this.cardRepository = cardRepository;
-    }
-
+    @Override
     public List<Card> getCards() {
         return cardRepository.findAll();
     }
 
+    @Override
     public Card getCard(Long id) {
         return cardRepository.findById(id).orElseThrow(() -> new CardNotFoundException(id));
     }
 
-    public void addCard(Card card) {
+    @Override
+    public Card addCard(Card card) {
         if (cardRepository.findByPhrase(card.getPhrase()).isPresent()) {
             throw new CardAlreadyExistsException(card.getPhrase());
         }
 
+        log.info("Saving a new card with the phrase: {}", card.getPhrase());
         card.setCreateDate(LocalDateTime.now());
         card.setCardStatus(CardStatus.CREATED);
-        cardRepository.save(card);
+        return cardRepository.save(card);
     }
 
-    public void deleteCard(Long id) {
+    @Override
+    public boolean deleteCard(Long id) {
         if (!cardRepository.existsById(id)) {
             throw new CardNotFoundException(id);
         }
 
+        log.info("Deleting the card with id: {}", id);
         cardRepository.deleteById(id);
+        return true;
     }
 
-    @Transactional
+    @Override
     public Card updateCard(Long id, Card updateCard) {
         Card card = getCard(id);
 
@@ -66,14 +74,13 @@ public class CardServiceImpl {
             card.setSentenceTranslate(updateCard.getSentenceTranslate());
         }
 
+        log.info("Saving the card with the phrase: {}", card.getPhrase());
         return cardRepository.save(card);
     }
 
+    @Override
     public List<Card> list(int limit) {
-        return cardRepository.findAll()
-                .stream()
-                .limit(limit)
-                .collect(Collectors.toList());
+        return cardRepository.findAll(PageRequest.of(0, limit)).toList();
     }
 
     private boolean isFieldSet(String field) {
