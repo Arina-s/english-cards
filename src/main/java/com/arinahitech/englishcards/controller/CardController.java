@@ -27,4 +27,14 @@ public class CardController {
     public void newPhraseRegistration(@RequestBody Card card) {
         cardService.addCard(card);
     }
+
+    @PatchMapping("/{id}")
+    public Card updateCard(@PathVariable("id") Long id, @RequestBody Card card) {
+        return cardService.updateCard(id, card);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCard(@PathVariable("id") Long id) {
+        cardService.deleteCard(id);
+    }
 }
