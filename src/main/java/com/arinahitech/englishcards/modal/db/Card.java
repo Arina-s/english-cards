@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -22,7 +21,6 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
-    @NotEmpty(message = "The phase cannot be empty or null.")
     private String phrase;
     private String translate;
     private String sentence;

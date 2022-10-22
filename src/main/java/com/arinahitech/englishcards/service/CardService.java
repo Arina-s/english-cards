@@ -15,6 +15,4 @@ public interface CardService {
     boolean deleteCard(Long id);
 
     Card updateCard(Long id, Card updateCard);
-
-    List<Card> list(int limit);
 }
